@@ -1,0 +1,104 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace swarm_demo
+{ public class point {
+        public double x, y;
+}
+    class L_shaped_Region
+    {
+        public int a= 2, b=3 , c=4 ;
+        public bool CheckRegion(double x, double y)
+        {
+            if (((x >= a && x <= a + c)&&(y>=0&&y<=a))||((y>=a&&y<=b)&&(x>=0&&x<=a)))
+            {
+               return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool contains( point p)
+        {
+            L_shaped_Region check_region = new L_shaped_Region();
+           bool final= check_region.CheckRegion( p.x, p.y);
+            if (final)
+            {
+                Console.WriteLine($"Point ({p.x},{p.y}) inside R ");
+            }
+            else
+            {
+                Console.WriteLine($"Point ({p.x},{p.y}) outside R ");
+            }
+            return final;
+        }
+        public void translate(double x1, double y1,point p,bool final)
+        {
+            L_shaped_Region check_region = new L_shaped_Region();
+           bool final1= check_region.CheckRegion(p.x+x1,p.y+y1);
+            if (final1&&final)
+            {
+                Console.WriteLine($"Point ({p.x},{p.y}) inside R1 & R");
+            }
+            else if(!(final||final1))
+            {
+                Console.WriteLine($"Point ({p.x},{p.y}) outside R1 & R ");
+            }
+            else if (final1)
+            {
+                Console.WriteLine($"Point ({p.x},{p.y}) inside R1 but outside R ");
+            }
+            else
+            {
+                Console.WriteLine($"Point ({p.x},{p.y}) outside R1 but inside R ");
+            }
+        }
+        public void rotate(double angle,point p,bool final)
+        {
+            double X =(p.x * (Math.Cos(angle))) +(p.y*(Math.Sin(angle)));
+            double Y =  (p.y * (Math.Sin(angle)))-(p.x * (Math.Sin(angle)));
+            L_shaped_Region check_region = new L_shaped_Region();
+            bool final1 = check_region.CheckRegion(X,Y);
+            if (final1 && final)
+            {
+                Console.WriteLine($"Point ({p.x},{p.y}) inside R2 & R");
+            }
+            else if (!(final || final1))
+            {
+                Console.WriteLine($"Point ({p.x},{p.y}) outside R2 & R ");
+            }
+            else if (final1)
+            {
+                Console.WriteLine($"Point ({p.x},{p.y}) inside R2 but outside R ");
+            }
+            else
+            {
+                Console.WriteLine($"Point ({p.x},{p.y}) outside R2 but inside R ");
+            }
+        }
+
+        class Results
+        {
+            static void Main(string[] args)
+            {
+                double x = Console.Read();
+                double y= Console.Read();
+                double x1 = Console.Read();
+                double y1 = Console.Read();
+                double angle = Console.Read();
+                point p = new point();
+                p.x = x;
+                p.y = y;
+                L_shaped_Region Ans = new L_shaped_Region();
+               bool final= Ans.contains(p);
+                Ans.translate(x1,y1,p,final);
+                Ans.rotate(angle, p,final);
+            }
+        }
+    }
+}
